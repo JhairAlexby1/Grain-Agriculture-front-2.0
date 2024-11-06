@@ -5,9 +5,6 @@ import { NotFound } from "./pages/NotFound";
 import { Home } from "./pages/Home";
 
 
-
-
-
 export default function App() {
   return (
     <BrowserRouter>
@@ -23,4 +20,4 @@ export default function App() {
       </Routes>
     </BrowserRouter>
   )
-}
+} 
