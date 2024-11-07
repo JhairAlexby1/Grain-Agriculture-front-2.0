@@ -71,13 +71,7 @@ export const Home = () => {
           umbral="50 ppm"
           porcentaje={(sensorData.gas / 1000) * 100} 
         />
-                                <CardNivel
-                  titulo="Nivel de Gases"
-                  valor={`${sensorData.gas} ppm`}
-                  descripcion={sensorData.gas > 50 ? "Nivel alto" : "Nivel óptimo"}
-                  umbral="50 ppm"
-                  porcentaje={(sensorData.gas / 1000) * 100} 
-                />
+                
                 <CardNivel
                   titulo="Nivel de Vibración"
                   valor={sensorData.vibration ? "En movimiento" : "Sin movimiento"}
