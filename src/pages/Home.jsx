@@ -17,16 +17,16 @@ export const Home = () => {
     vibration: 0,
   });
 
-  useEffect(() => {
+    useEffect(() => {
     const socket = io('http://localhost:3002/grain-sensor', {
       transports: ['websocket'],
     });
-
+  
     socket.on('grainSensorData', (data) => {
       console.log('Received data from WebSocket:', data);
       setSensorData(data);
     });
-
+  
     return () => {
       socket.disconnect();
     };
@@ -71,13 +71,20 @@ export const Home = () => {
           umbral="50 ppm"
           porcentaje={(sensorData.gas / 1000) * 100} 
         />
-        <CardNivel
-          titulo="Nivel de Vibración"
-          valor={`${sensorData.vibration}`}
-          descripcion={sensorData.vibration > 7.0 ? "Actividad inusual" : "Normal"}
-          umbral="7.0"
-          porcentaje={(sensorData.vibration / 10) * 100} 
-        />
+                                <CardNivel
+                  titulo="Nivel de Gases"
+                  valor={`${sensorData.gas} ppm`}
+                  descripcion={sensorData.gas > 50 ? "Nivel alto" : "Nivel óptimo"}
+                  umbral="50 ppm"
+                  porcentaje={(sensorData.gas / 1000) * 100} 
+                />
+                <CardNivel
+                  titulo="Nivel de Vibración"
+                  valor={sensorData.vibration ? "En movimiento" : "Sin movimiento"}
+                  descripcion={sensorData.vibration ? "En movimiento" : "Sin movimiento"}
+                  umbral="1"
+                  porcentaje={sensorData.vibration ? 100 : 0}
+                />
       </div>
       {sensorData.vibration > 7.0 && (
         <Alerta
