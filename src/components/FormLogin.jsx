@@ -1,10 +1,17 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const FormLogin = () => {
+  const navigate = useNavigate();
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     
   };
+
+  const btnLogin = () => {
+    navigate('/home');
+  }
 
   return (
     <form className="p-4" onSubmit={handleSubmit}>
@@ -32,6 +39,7 @@ export const FormLogin = () => {
       </div>
       <div className="p-4 flex flex-col items-center">
         <button
+        onClick={btnLogin}
           type="submit"
           className="w-52 bg-yellow-500 text-white p-2 rounded-xl font-semibold hover:bg-yellow-600 transition-colors"
         >
