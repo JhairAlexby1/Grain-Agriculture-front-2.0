@@ -1,18 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
 import CardTemperatura from '../components/CardTemperatura';
 import CardNivel from '../components/CardNivel';
 import Alerta from '../components/Alerta';
-import logo from '../img/logo.png'; 
+import logo from '../img/logo.png';
 import { useNavigate } from 'react-router-dom';
-
 
 export const Home = () => {
   const navigate = useNavigate();
 
+  const [sensorData, setSensorData] = useState({
+    temperature_inside: 0,
+    temperature_outside: 0,
+    humidity: 0,
+    gas: 0,
+    vibration: 0,
+  });
+
+  useEffect(() => {
+    const socket = io('http://localhost:3002/grain-sensor', {
+      transports: ['websocket'],
+    });
+
+    socket.on('grainSensorData', (data) => {
+      console.log('Received data from WebSocket:', data);
+      setSensorData(data);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   const handleLogoutClick = () => {
     navigate('/landingPage');
   };
-
 
   return (
     <div className="p-6 bg-orange-400 min-h-screen text-white">
@@ -25,41 +47,50 @@ export const Home = () => {
       <div className="grid grid-cols-2 gap-4 mt-6">
         <CardTemperatura
           titulo="Temperatura Ambiente"
-          valor="27.5°C"
+          valor={`${sensorData.temperature_outside}°C`}
           descripcion="☀ 2.5°C del ideal"
           ideal="25°C"
+          porcentaje={(sensorData.temperature_outside / 40) * 100} 
         />
         <CardTemperatura
           titulo="Humedad"
-          valor="68.1%"
+          valor={`${sensorData.humidity}%`}
           descripcion="Rango óptimo: 60-70%"
+          porcentaje={(sensorData.humidity / 100) * 100} 
         />
         <CardTemperatura
           titulo="Temp. Granos"
-          valor="21.7°C"
+          valor={`${sensorData.temperature_inside}°C`}
           descripcion="Máx. recomendado: 20°C"
+          porcentaje={(sensorData.temperature_inside / 40) * 100} 
         />
         <CardNivel
           titulo="Nivel de Gases"
-          valor="76 ppm"
-          descripcion="Nivel alto"
+          valor={`${sensorData.gas} ppm`}
+          descripcion={sensorData.gas > 50 ? "Nivel alto" : "Nivel óptimo"}
           umbral="50 ppm"
+          porcentaje={(sensorData.gas / 1000) * 100} 
         />
         <CardNivel
           titulo="Nivel de Vibración"
-          valor="9.9"
-          descripcion="Actividad inusual"
+          valor={`${sensorData.vibration}`}
+          descripcion={sensorData.vibration > 7.0 ? "Actividad inusual" : "Normal"}
           umbral="7.0"
+          porcentaje={(sensorData.vibration / 10) * 100} 
         />
       </div>
-      <Alerta
-        mensaje="¡Alerta de Vibración! Se ha detectado un movimiento inusual. Posible presencia de roedores."
-        tipo="vibracion"
-      />
-      <Alerta
-        mensaje="¡Alerta de Gases Nocivos! Se han detectado niveles elevados de gases. Posible descomposición o fermentación indeseada."
-        tipo="gases"
-      />
+      {sensorData.vibration > 7.0 && (
+        <Alerta
+          mensaje="¡Alerta de Vibración! Se ha detectado un movimiento inusual. Posible presencia de roedores."
+          tipo="vibracion"
+        />
+      )}
+      {sensorData.gas > 50 && (
+        <Alerta
+          mensaje="¡Alerta de Gases Nocivos! Se han detectado niveles elevados de gases. Posible descomposición o fermentación indeseada."
+          tipo="gases"
+        />
+      )}
     </div>
   );
 };
