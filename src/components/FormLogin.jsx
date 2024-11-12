@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2'; 
 
 export const FormLogin = () => {
   const navigate = useNavigate();
@@ -10,9 +11,9 @@ export const FormLogin = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     console.log('Datos de inicio de sesión:', { email, password });
-  
+
     try {
       const response = await axios.post(
         'http://localhost:3000/users/login',
@@ -24,28 +25,43 @@ export const FormLogin = () => {
           withCredentials: true,
         }
       );
-  
+
       console.log('Respuesta del servidor:', response);
-  
+
+     
       if ((response.status === 200 || response.status === 201) && response.data) {
-        alert(response.data.message || 'Inicio de sesión exitoso');
-        navigate('/home');
+        Swal.fire({
+          icon: 'success',
+          title: '¡Inicio de sesión exitoso!',
+          text: response.data.message || 'Has iniciado sesión correctamente.',
+        }).then(() => {
+          navigate('/home'); 
+        });
       } else {
-        alert(response.data.message || 'Credenciales incorrectas');
+        Swal.fire({
+          icon: 'error',
+          title: 'Credenciales incorrectas',
+          text: response.data.message || 'Por favor, verifica tus datos.',
+        });
       }
     } catch (error) {
       if (error.response) {
         console.error('Error en la respuesta del servidor:', error.response);
-        alert(error.response.data.message || 'Error al iniciar sesión');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al iniciar sesión',
+          text: error.response.data.message || 'Error en la respuesta del servidor.',
+        });
       } else {
         console.error('Error durante el inicio de sesión:', error);
-        alert('Ocurrió un error. Por favor, inténtalo de nuevo más tarde.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Ocurrió un error',
+          text: 'Por favor, inténtalo de nuevo más tarde.',
+        });
       }
     }
   };
-  
-  
-
 
   return (
     <form className="p-4" onSubmit={handleSubmit}>
