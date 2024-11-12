@@ -1,23 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import logo from '../img/logo.png';
 
 export const Header = () => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    Swal.fire({
-      title: '¿Deseas iniciar sesión?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, continuar',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate('/login');
-      }
-    });
+    navigate('/login');
   };
 
   const scrollToSection = (sectionId) => {
