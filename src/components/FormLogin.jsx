@@ -9,11 +9,18 @@ export const FormLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
     event.preventDefault();
-
-    console.log('Datos de inicio de sesión:', { email, password });
-
+  
+    if (!email || !password) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor complete todos los campos',
+      });
+      return;
+    }
+  
     try {
       const response = await axios.post(
         'http://localhost:3000/users/login',
@@ -25,41 +32,27 @@ export const FormLogin = () => {
           withCredentials: true,
         }
       );
-
-      console.log('Respuesta del servidor:', response);
-
-     
-      if ((response.status === 200 || response.status === 201) && response.data) {
+  
+      if (response.data && response.data.success === true) {
         Swal.fire({
           icon: 'success',
-          title: '¡Inicio de sesión exitoso!',
-          text: response.data.message || 'Has iniciado sesión correctamente.',
-        }).then(() => {
-          navigate('/home'); 
+          title: 'Bienvenido',
+          text: 'Inicio de sesión exitoso',
+          showConfirmButton: false,
+          timer: 1500
         });
+        navigate('/home');
       } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Credenciales incorrectas',
-          text: response.data.message || 'Por favor, verifica tus datos.',
-        });
+        throw new Error(response.data.message || 'Credenciales inválidas');
       }
+  
     } catch (error) {
-      if (error.response) {
-        console.error('Error en la respuesta del servidor:', error.response);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al iniciar sesión',
-          text: error.response.data.message || 'Error en la respuesta del servidor.',
-        });
-      } else {
-        console.error('Error durante el inicio de sesión:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Ocurrió un error',
-          text: 'Por favor, inténtalo de nuevo más tarde.',
-        });
-      }
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.message || 'Error al iniciar sesión',
+      });
+      console.error('Error:', error);
     }
   };
 
