@@ -6,26 +6,20 @@ import Swal from 'sweetalert2';
 import logo from '../img/logo.png';
 import CardTemperatura from '../components/CardTemperatura';
 import CardNivel from '../components/CardNivel';
+import CardSkeleton from '../components/CardSkeleton';
 import { FaThermometerHalf, FaCloudRain, FaWind, FaBolt } from 'react-icons/fa';
 import { GiGasStove } from 'react-icons/gi';
 
 export const Home = () => {
   const navigate = useNavigate();
 
-  const [sensorData, setSensorData] = useState({
-    temperature_inside: 0,
-    temperature_outside: 0,
-    humidity: 0,
-    gas: 0,
-    vibration: 0,
-  });
-
+  const [sensorData, setSensorData] = useState(null); 
   useEffect(() => {
-    const socket = io('http://localhost:3002/grain-sensor', {
+    const socket = io('ws://localhost:3002/grain-sensor', {
       transports: ['websocket'],
     });
 
-    socket.on('sensorData', (data) => {
+    socket.on('grainSensorData', (data) => {  
       console.log('Received sensor data:', data);
       setSensorData(data);
     });
@@ -106,90 +100,99 @@ export const Home = () => {
         </div>
       </header>
 
-         
-      
-      
       <main className="pt-24 px-6">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold text-gray-800 mb-8">Panel de Control</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <CardTemperatura 
-              titulo="Temperatura Interior"
-              valor={`${sensorData.temperature_inside}°C`}
-              descripcion="Temperatura dentro del contenedor. Crucial para la preservación de granos."
-              ideal="25°C"
-              minimo="15°C"
-              maximo="35°C"
-              porcentaje={(sensorData.temperature_inside / 50) * 100}
-              icon={<FaThermometerHalf className="text-4xl text-orange-500" />}
-              estado={
-                sensorData.temperature_inside > 35 ? 'crítico' :
-                sensorData.temperature_inside > 30 ? 'advertencia' : 'normal'
-              }
-            />
-      
-            <CardTemperatura 
-              titulo="Temperatura Exterior"
-              valor={`${sensorData.temperature_outside}°C`}
-              descripcion="Temperatura ambiente externa. Afecta la temperatura interior."
-              ideal="22°C"
-              minimo="10°C"
-              maximo="40°C"
-              porcentaje={(sensorData.temperature_outside / 50) * 100}
-              icon={<FaThermometerHalf className="text-4xl text-blue-500" />}
-              estado={
-                sensorData.temperature_outside > 40 ? 'crítico' :
-                sensorData.temperature_outside > 35 ? 'advertencia' : 'normal'
-              }
-            />
-      
-            <CardNivel 
-              titulo="Humedad"
-              valor={`${sensorData.humidity}%`}
-              descripcion="Nivel de humedad relativa. Crítico para prevenir hongos."
-              umbral={75}
-              minimo="30%"
-              maximo="80%"
-              ideal="50-60%"
-              porcentaje={sensorData.humidity}
-              icon={<FaCloudRain className="text-4xl text-blue-400" />}
-              estado={
-                sensorData.humidity > 75 ? 'crítico' :
-                sensorData.humidity > 65 ? 'advertencia' : 'normal'
-              }
-            />
-      
-            <CardNivel 
-              titulo="Nivel de Gas"
-              valor={sensorData.gas}
-              descripcion="Concentración de gases nocivos (CO2, etileno). Importante para la seguridad."
-              umbral={500}
-              minimo="0"
-              maximo="1000"
-              ideal="<300"
-              porcentaje={(sensorData.gas / 1000) * 100}
-              icon={<GiGasStove className="text-4xl text-gray-600" />}
-              estado={
-                sensorData.gas > 800 ? 'crítico' :
-                sensorData.gas > 500 ? 'advertencia' : 'normal'
-              }
-            />
-      
-            <CardNivel 
-              titulo="Vibración"
-              valor={sensorData.vibration}
-              descripcion="Nivel de vibración del contenedor. Indica estabilidad estructural."
-              umbral={2}
-              minimo="0"
-              maximo="5"
-              ideal="<1"
-              porcentaje={(sensorData.vibration / 5) * 100}
-              icon={<FaBolt className="text-4xl text-yellow-500" />}
-              estado={
-                sensorData.vibration > 4 ? 'crítico' :
-                sensorData.vibration > 2 ? 'advertencia' : 'normal'
-              }
-            />
+            {sensorData ? (
+              <>
+                <CardTemperatura 
+                  titulo="Temperatura Interior"
+                  valor={`${sensorData.temperature_inside}°C`}
+                  descripcion="Temperatura dentro del contenedor. Crucial para la preservación de granos."
+                  ideal="25°C"
+                  minimo="15°C"
+                  maximo="35°C"
+                  porcentaje={(sensorData.temperature_inside / 50) * 100}
+                  icon={<FaThermometerHalf className="text-4xl text-orange-500" />}
+                  estado={
+                    sensorData.temperature_inside > 35 ? 'crítico' :
+                    sensorData.temperature_inside > 30 ? 'advertencia' : 'normal'
+                  }
+                />
+
+                <CardTemperatura 
+                  titulo="Temperatura Exterior"
+                  valor={`${sensorData.temperature_outside}°C`}
+                  descripcion="Temperatura ambiente externa. Afecta la temperatura interior."
+                  ideal="22°C"
+                  minimo="10°C"
+                  maximo="40°C"
+                  porcentaje={(sensorData.temperature_outside / 50) * 100}
+                  icon={<FaThermometerHalf className="text-4xl text-blue-500" />}
+                  estado={
+                    sensorData.temperature_outside > 40 ? 'crítico' :
+                    sensorData.temperature_outside > 35 ? 'advertencia' : 'normal'
+                  }
+                />
+
+                <CardNivel 
+                  titulo="Humedad"
+                  valor={`${sensorData.humidity}%`}
+                  descripcion="Nivel de humedad relativa. Crítico para prevenir hongos."
+                  umbral={75}
+                  minimo="30%"
+                  maximo="80%"
+                  ideal="50-60%"
+                  porcentaje={sensorData.humidity}
+                  icon={<FaCloudRain className="text-4xl text-blue-400" />}
+                  estado={
+                    sensorData.humidity > 75 ? 'crítico' :
+                    sensorData.humidity > 65 ? 'advertencia' : 'normal'
+                  }
+                />
+
+                <CardNivel 
+                  titulo="Nivel de Gas"
+                  valor={sensorData.gas}
+                  descripcion="Concentración de gases nocivos (CO2, etileno). Importante para la seguridad."
+                  umbral={500}
+                  minimo="0"
+                  maximo="1000"
+                  ideal="<300"
+                  porcentaje={(sensorData.gas / 1000) * 100}
+                  icon={<GiGasStove className="text-4xl text-gray-600" />}
+                  estado={
+                    sensorData.gas > 800 ? 'crítico' :
+                    sensorData.gas > 500 ? 'advertencia' : 'normal'
+                  }
+                />
+
+                <CardNivel 
+                  titulo="Vibración"
+                  valor={sensorData.vibration}
+                  descripcion="Nivel de vibración del contenedor. Indica estabilidad estructural."
+                  umbral={2}
+                  minimo="0"
+                  maximo="5"
+                  ideal="<1"
+                  porcentaje={(sensorData.vibration / 5) * 100}
+                  icon={<FaBolt className="text-4xl text-yellow-500" />}
+                  estado={
+                    sensorData.vibration > 4 ? 'crítico' :
+                    sensorData.vibration > 2 ? 'advertencia' : 'normal'
+                  }
+                />
+              </>
+            ) : (
+              <>
+                <CardSkeleton />
+                <CardSkeleton />
+                <CardSkeleton />
+                <CardSkeleton />
+                <CardSkeleton />
+              </>
+            )}
           </div>
         </div>
       </main>
