@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
-import CardTemperatura from '../components/CardTemperatura';
-import CardNivel from '../components/CardNivel';
-import Alerta from '../components/Alerta';
-import logo from '../img/logo.png';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import logo from '../img/logo.png';
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -17,23 +16,52 @@ export const Home = () => {
     vibration: 0,
   });
 
-    useEffect(() => {
+  useEffect(() => {
     const socket = io('http://localhost:3002/grain-sensor', {
       transports: ['websocket'],
     });
-  
-    socket.on('grainSensorData', (data) => {
-      console.log('Received data from WebSocket:', data);
+
+    socket.on('sensorData', (data) => {
+      console.log('Received sensor data:', data);
       setSensorData(data);
     });
-  
+
     return () => {
       socket.disconnect();
     };
   }, []);
 
-  const handleLogoutClick = () => {
-    navigate('/landingPage');
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        'http://localhost:3000/users/logout',
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      if (response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Sesión cerrada',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        localStorage.clear();
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo cerrar la sesión'
+      });
+    }
   };
 
   return (
@@ -42,56 +70,40 @@ export const Home = () => {
         <div className="flex-1 text-lg md:text-xl">
           <img src={logo} alt="Logo" className="w-16 h-auto md:w-24" />
         </div>
-        <button onClick={handleLogoutClick} className="bg-white text-black px-4 py-2 rounded">Cerrar Sesión</button>
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          Cerrar Sesión
+        </button>
       </header>
-      <div className="grid grid-cols-2 gap-4 mt-6">
-        <CardTemperatura
-          titulo="Temperatura Ambiente"
-          valor={`${sensorData.temperature_outside}°C`}
-          descripcion="☀ 2.5°C del ideal"
-          ideal="25°C"
-          porcentaje={(sensorData.temperature_outside / 40) * 100} 
-        />
-        <CardTemperatura
-          titulo="Humedad"
-          valor={`${sensorData.humidity}%`}
-          descripcion="Rango óptimo: 60-70%"
-          porcentaje={(sensorData.humidity / 100) * 100} 
-        />
-        <CardTemperatura
-          titulo="Temp. Granos"
-          valor={`${sensorData.temperature_inside}°C`}
-          descripcion="Máx. recomendado: 20°C"
-          porcentaje={(sensorData.temperature_inside / 40) * 100} 
-        />
-        <CardNivel
-          titulo="Nivel de Gases"
-          valor={`${sensorData.gas} ppm`}
-          descripcion={sensorData.gas > 50 ? "Nivel alto" : "Nivel óptimo"}
-          umbral="50 ppm"
-          porcentaje={(sensorData.gas / 1000) * 100} 
-        />
-                
-                <CardNivel
-                  titulo="Nivel de Vibración"
-                  valor={sensorData.vibration ? "En movimiento" : "Sin movimiento"}
-                  descripcion={sensorData.vibration ? "En movimiento" : "Sin movimiento"}
-                  umbral="1"
-                  porcentaje={sensorData.vibration ? 100 : 0}
-                />
-      </div>
-      {sensorData.vibration > 7.0 && (
-        <Alerta
-          mensaje="¡Alerta de Vibración! Se ha detectado un movimiento inusual. Posible presencia de roedores."
-          tipo="vibracion"
-        />
-      )}
-      {sensorData.gas > 50 && (
-        <Alerta
-          mensaje="¡Alerta de Gases Nocivos! Se han detectado niveles elevados de gases. Posible descomposición o fermentación indeseada."
-          tipo="gases"
-        />
-      )}
+
+      <main className="mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-gray-800 text-xl font-bold mb-4">Temperatura Interior</h2>
+            <p className="text-gray-600 text-3xl">{sensorData.temperature_inside}°C</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-gray-800 text-xl font-bold mb-4">Temperatura Exterior</h2>
+            <p className="text-gray-600 text-3xl">{sensorData.temperature_outside}°C</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-gray-800 text-xl font-bold mb-4">Humedad</h2>
+            <p className="text-gray-600 text-3xl">{sensorData.humidity}%</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-gray-800 text-xl font-bold mb-4">Gas</h2>
+            <p className="text-gray-600 text-3xl">{sensorData.gas}</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-gray-800 text-xl font-bold mb-4">Vibración</h2>
+            <p className="text-gray-600 text-3xl">{sensorData.vibration}</p>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
+
+export default Home;

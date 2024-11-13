@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2'; 
 
 export const FormLogin = () => {
   const navigate = useNavigate();
@@ -8,10 +9,17 @@ export const FormLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
     event.preventDefault();
   
-    console.log('Datos de inicio de sesión:', { email, password });
+    if (!email || !password) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor complete todos los campos',
+      });
+      return;
+    }
   
     try {
       const response = await axios.post(
@@ -25,27 +33,28 @@ export const FormLogin = () => {
         }
       );
   
-      console.log('Respuesta del servidor:', response);
-  
-      if ((response.status === 200 || response.status === 201) && response.data) {
-        alert(response.data.message || 'Inicio de sesión exitoso');
+      if (response.data && response.data.success === true) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Bienvenido',
+          text: 'Inicio de sesión exitoso',
+          showConfirmButton: false,
+          timer: 1500
+        });
         navigate('/home');
       } else {
-        alert(response.data.message || 'Credenciales incorrectas');
+        throw new Error(response.data.message || 'Credenciales inválidas');
       }
+  
     } catch (error) {
-      if (error.response) {
-        console.error('Error en la respuesta del servidor:', error.response);
-        alert(error.response.data.message || 'Error al iniciar sesión');
-      } else {
-        console.error('Error durante el inicio de sesión:', error);
-        alert('Ocurrió un error. Por favor, inténtalo de nuevo más tarde.');
-      }
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.message || 'Error al iniciar sesión',
+      });
+      console.error('Error:', error);
     }
   };
-  
-  
-
 
   return (
     <form className="p-4" onSubmit={handleSubmit}>
