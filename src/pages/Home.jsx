@@ -10,7 +10,6 @@ import CardSkeleton from "../components/CardSkeleton";
 import {
   FaThermometerHalf,
   FaCloudRain,
-  FaWind,
   FaBolt,
   FaSignOutAlt,
   FaTachometerAlt,
@@ -83,6 +82,17 @@ export const Home = () => {
         });
       }
     }
+  };
+
+   const calibrateGasSensor = (rawValue) => {
+    if (rawValue < 0 || rawValue > 1023) {
+      console.warn('Invalid sensor value:', rawValue);
+      return 0;
+    }
+  
+    const percentage = 100 - ((rawValue / 1023) * 100);
+    
+    return Math.round(percentage * 10) / 10;
   };
 
   return (
@@ -210,18 +220,20 @@ export const Home = () => {
                     />
                     <CardNivel
                       titulo="Nivel de Gas"
-                      valor={sensorData.gas}
+                      valor={`${calibrateGasSensor(sensorData.gas).toFixed(
+                        2
+                      )} ppm`}
                       descripcion="Concentración de gases nocivos"
                       umbral={500}
                       minimo="0"
                       maximo="1000"
                       ideal="<300"
-                      porcentaje={(sensorData.gas / 1000) * 100}
+                      porcentaje={(calibrateGasSensor(sensorData.gas) / 1000) * 100}
                       icon={<GiGasStove className="text-4xl text-gray-600" />}
                       estado={
-                        sensorData.gas > 800
+                        calibrateGasSensor(sensorData.gas) > 800
                           ? "crítico"
-                          : sensorData.gas > 500
+                          : calibrateGasSensor(sensorData.gas) > 500
                           ? "advertencia"
                           : "normal"
                       }
