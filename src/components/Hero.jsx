@@ -1,10 +1,7 @@
 import React from 'react';
 import Swal from 'sweetalert2';
 import maiz from '../img/maiz.jpg';
-import maizHori from '../img/maizHori.jpg';
-import elote from '../img/elote.jpg'
-
-
+import elote from '../img/elote.jpg';
 
 export const Hero = () => {
 
@@ -14,11 +11,11 @@ export const Hero = () => {
       text: mensaje,
       icon: 'info',
       confirmButtonText: 'Cerrar',
-      background: '#fff4e6',
-      confirmButtonColor: '#f8b90b',
+      background: '#FFF9E6',
+      confirmButtonColor: '#DAA520',
       customClass: {
-        title: 'text-2xl text-[#f8b90b]',
-        popup: 'rounded-xl shadow-lg',
+        title: 'text-3xl text-[#DAA520]',
+        popup: 'rounded-lg shadow-xl',
       },
     });
   };
@@ -26,72 +23,70 @@ export const Hero = () => {
   const mostrarAlerta = () => {
     Swal.fire({
       title: '¡Bienvenido a Grain!',
-      text: 'Revoluciona el almacenamiento de tus granos con tecnología avanzada.',
+      text: 'Descubre la mejor tecnología para el cuidado de tus granos.',
       icon: 'info',
       confirmButtonText: 'Entendido',
-      background: '#fff4e6',
-      confirmButtonColor: '#f8b90b',
+      background: '#FFF9E6',
+      confirmButtonColor: '#DAA520',
       customClass: {
-        title: 'text-2xl text-[#f8b90b]', 
-        popup: 'rounded-xl shadow-lg',
+        title: 'text-3xl text-[#DAA520]', 
+        popup: 'rounded-lg shadow-xl',
       },
     });
   };
 
   return (
-    <section className="bg-white min-h-screen">
-      <div className="grid grid-cols-1 md:grid-cols-2 h-full">
+      <section className="bg-gradient-to-br from-[#FFFDE7] to-[#FFE082] min-h-screen pt-24"> {/* Agregado pt-24 */}      <div className="grid grid-cols-1 md:grid-cols-2 h-full">
         
-        <div className="bg-[rgb(248,185,11)] text-left flex flex-col justify-center p-8">
+        <div className="flex flex-col justify-center p-8 space-y-6 text-left animate__animated animate__fadeInLeft">
           <h1
-            className="text-3xl md:text-5xl font-bold mb-4 text-white cursor-pointer"
+            className="text-5xl md:text-7xl font-extrabold leading-tight text-[#8B4513] cursor-pointer hover:scale-105 transition-transform drop-shadow-lg"
             onClick={mostrarAlerta} 
           >
-            Monitoreo Inteligente de Granos de Maíz
+            Monitoreo Inteligente para tus Granos
           </h1>
-          <p className="text-lg md:text-xl text-black">
-            Revoluciona el almacenamiento de tus granos con tecnología de punta. Controla calidad y cantidad desde tu smartphone.
+          <p className="text-xl md:text-2xl text-[#5D4037]">
+            Mantén la calidad y frescura de tus granos de forma simple y segura desde cualquier lugar.
           </p>
+          
         </div>
 
-        <div className="relative">
+        <div className="relative h-64 md:h-auto animate__animated animate__fadeInRight">
           <img
             src={maiz}
             alt="Granos de Maíz"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-l-lg md:rounded-none shadow-xl"
           />
         </div>
       </div>
 
-      <section id="caracteristicas" className="py-10">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-[#f8b90b] mb-6">
-            Características Avanzadas
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section id="caracteristicas" className="py-16 bg-[#FFFDE7] text-center text-[#5D4037]">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-4xl font-bold text-[#DAA520] mb-10">Características Avanzadas</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div 
-              className="p-6 bg-white shadow-md rounded-lg cursor-pointer"
+              className="p-8 bg-[#FFF9E6] shadow-lg rounded-lg transform transition-transform hover:scale-105 hover:bg-[#FFE082] cursor-pointer"
               onClick={() => mostrarInfoCaracteristica("Monitoreo en Tiempo Real", "Seguimiento constante de humedad, temperatura y niveles de CO2 de tus granos.")}
             >
-              <div className="text-[#f8b90b] text-4xl mb-4">📊</div>
-              <h3 className="text-xl font-bold text-[#f8b90b] mb-2">Monitoreo en Tiempo Real</h3>
-              <p className="text-[#000000]">Seguimiento constante de humedad, temperatura y niveles de CO2 de tus granos.</p>
+              <div className="text-[#DAA520] text-6xl mb-6">📊</div>
+              <h3 className="text-2xl font-semibold mb-4">Monitoreo en Tiempo Real</h3>
+              <p className="text-lg leading-relaxed">Seguimiento constante de humedad, temperatura y niveles de CO2 para asegurar la frescura de tus granos.</p>
             </div>
             <div 
-              className="p-6 bg-white shadow-md rounded-lg cursor-pointer"
+              className="p-8 bg-[#FFF9E6] shadow-lg rounded-lg transform transition-transform hover:scale-105 hover:bg-[#FFE082] cursor-pointer"
               onClick={() => mostrarInfoCaracteristica("Uso Doméstico", "Diseñado para propietarios de granjas pequeñas y pequeños negocios.")}
             >
-              <div className="text-[#f8b90b] text-4xl mb-4">🏠</div>
-              <h3 className="text-xl font-bold text-[#f8b90b] mb-2">Uso Doméstico</h3>
-              <p className="text-[#000000]">Diseñado para propietarios de granjas pequeñas y pequeños negocios.</p>
+              <div className="text-[#DAA520] text-6xl mb-6">🏠</div>
+              <h3 className="text-2xl font-semibold mb-4">Uso Doméstico</h3>
+              <p className="text-lg leading-relaxed">Diseñado para propietarios de granjas pequeñas, proporcionando una solución accesible y práctica.</p>
             </div>
             <div 
-              className="p-6 bg-white shadow-md rounded-lg cursor-pointer"
+              className="p-8 bg-[#FFF9E6] shadow-lg rounded-lg transform transition-transform hover:scale-105 hover:bg-[#FFE082] cursor-pointer"
               onClick={() => mostrarInfoCaracteristica("Alertas de Seguridad", "Notificaciones inmediatas ante cualquier anomalía.")}
             >
-              <div className="text-[#f8b90b] text-4xl mb-4">⚠</div>
-              <h3 className="text-xl font-bold text-[#f8b90b] mb-2">Alertas de Seguridad</h3>
-              <p className="text-[#000000]">Notificaciones inmediatas ante cualquier anomalía.</p>
+              <div className="text-[#DAA520] text-6xl mb-6">⚠️</div>
+              <h3 className="text-2xl font-semibold mb-4">Alertas de Seguridad</h3>
+              <p className="text-lg leading-relaxed">Recibe notificaciones instantáneas ante cualquier condición fuera de lo normal para proteger tu cosecha.</p>
             </div>
           </div>
         </div>
