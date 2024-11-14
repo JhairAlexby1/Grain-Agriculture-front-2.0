@@ -254,7 +254,7 @@ export const Home = () => {
                       maximo="1"
                       ideal="0"
                       porcentaje={sensorData.movement_1 * 100}
-                      icon={<FaWind className="text-4xl text-purple-500" />}
+                      icon={<FaBolt className="text-4xl text-yellow-500" />}
                       estado={
                         sensorData.movement_1 === 1 ? "crítico" : "normal"
                       }
