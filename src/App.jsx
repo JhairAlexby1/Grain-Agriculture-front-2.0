@@ -2,8 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LandingPage } from "./pages/LandingPage";
 import { Login } from "./pages/Login";
 import { NotFound } from "./pages/NotFound";
-import { Home } from "./pages/Home";
-
+import Home from "./pages/Home";
 
 export default function App() {
   return (

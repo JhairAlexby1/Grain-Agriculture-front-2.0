@@ -1,24 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
-import axios from "axios";
-import Swal from "sweetalert2";
-import logo from "../img/logo.png";
+import Menu from "../components/Menu";
 import CardTemperatura from "../components/CardTemperatura";
 import CardNivel from "../components/CardNivel";
 import CardSkeleton from "../components/CardSkeleton";
-import {
-  FaThermometerHalf,
-  FaCloudRain,
-  FaBolt,
-  FaSignOutAlt,
-  FaTachometerAlt,
-  FaBars,
-  FaTimes,
-} from "react-icons/fa";
+import { FaThermometerHalf, FaCloudRain, FaBolt, FaBars } from "react-icons/fa";
 import { GiGasStove } from "react-icons/gi";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export const Home = () => {
+const Home = () => {
   const navigate = useNavigate();
   const [sensorData, setSensorData] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -86,47 +78,20 @@ export const Home = () => {
 
   const calibrateGasSensor = (rawValue) => {
     if (rawValue < 0 || rawValue > 1023) {
-      console.warn('Invalid sensor value:', rawValue);
+      console.warn("Invalid sensor value:", rawValue);
       return 0;
     }
-
-    const percentage = 100 - ((rawValue / 1023) * 100);
-
+    const percentage = 100 - (rawValue / 1023) * 100;
     return Math.round(percentage * 10) / 10;
   };
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <div
-        className={`fixed inset-y-0 left-0 transform ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        } md:relative md:translate-x-0 transition-transform duration-200 ease-in-out bg-gray-800 text-white w-64 flex-shrink-0`}
-      >
-        <div className="p-4 flex flex-col h-full">
-          <div className="flex items-center justify-between mb-8">
-            <img src={logo} alt="Logo" className="h-8 w-auto" />
-            <button
-              className="md:hidden text-white"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <FaTimes size={24} />
-            </button>
-          </div>
-          <nav className="flex-1">
-            <button className="flex items-center space-x-3 w-full p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors">
-              <FaTachometerAlt className="text-xl" />
-              <span>Dashboard</span>
-            </button>
-            <button
-              onClick={handleLogout}
-              className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-red-600 transition-colors mt-4"
-            >
-              <FaSignOutAlt className="text-xl" />
-              <span>Cerrar Sesión</span>
-            </button>
-          </nav>
-        </div>
-      </div>
+      <Menu
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+        onLogout={handleLogout}
+      />
 
       <div className="flex-1 overflow-auto">
         <div className="p-4 sm:p-8">
