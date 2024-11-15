@@ -84,14 +84,14 @@ export const Home = () => {
     }
   };
 
-   const calibrateGasSensor = (rawValue) => {
+  const calibrateGasSensor = (rawValue) => {
     if (rawValue < 0 || rawValue > 1023) {
       console.warn('Invalid sensor value:', rawValue);
       return 0;
     }
-  
+
     const percentage = 100 - ((rawValue / 1023) * 100);
-    
+
     return Math.round(percentage * 10) / 10;
   };
 
@@ -154,15 +154,19 @@ export const Home = () => {
                       titulo="Temperatura Interior"
                       valor={`${sensorData.temperature_inside}°C`}
                       descripcion="Temperatura dentro del contenedor"
-                      ideal="25°C"
+                      ideal="18°C - 23°C"
+                      minimo="10°C"
+                      maximo="30°C"
                       porcentaje={(sensorData.temperature_inside / 50) * 100}
                       icon={
                         <FaThermometerHalf className="text-4xl text-red-500" />
                       }
                       estado={
-                        sensorData.temperature_inside > 35
+                        sensorData.temperature_inside > 30 ||
+                        sensorData.temperature_inside < 10
                           ? "crítico"
-                          : sensorData.temperature_inside > 30
+                          : sensorData.temperature_inside > 23 ||
+                            sensorData.temperature_inside < 18
                           ? "advertencia"
                           : "normal"
                       }
@@ -171,17 +175,19 @@ export const Home = () => {
                       titulo="Temperatura Exterior"
                       valor={`${sensorData.temperature_outside}°C`}
                       descripcion="Temperatura ambiente externa"
-                      ideal="22°C"
+                      ideal="18°C - 23°C"
                       minimo="10°C"
-                      maximo="40°C"
+                      maximo="30°C"
                       porcentaje={(sensorData.temperature_outside / 50) * 100}
                       icon={
                         <FaThermometerHalf className="text-4xl text-blue-500" />
                       }
                       estado={
-                        sensorData.temperature_outside > 40
+                        sensorData.temperature_outside > 30 ||
+                        sensorData.temperature_outside < 10
                           ? "crítico"
-                          : sensorData.temperature_outside > 35
+                          : sensorData.temperature_outside > 23 ||
+                            sensorData.temperature_outside < 18
                           ? "advertencia"
                           : "normal"
                       }
@@ -207,13 +213,18 @@ export const Home = () => {
                       titulo="Humedad"
                       valor={`${sensorData.humidity}%`}
                       descripcion="Nivel de humedad relativa"
-                      umbral={75}
-                      porcentaje={sensorData.humidity}
-                      icon={<FaCloudRain className="text-4xl text-blue-400" />}
+                      ideal="10% - 12%"
+                      minimo="8%"
+                      maximo="14%"
+                      porcentaje={(sensorData.humidity / 100) * 100}
+                      icon={
+                        <FaCloudRain className="text-4xl text-blue-400" />
+                      }
                       estado={
-                        sensorData.humidity > 75
+                        sensorData.humidity > 14 || sensorData.humidity < 8
                           ? "crítico"
-                          : sensorData.humidity > 65
+                          : sensorData.humidity > 12 ||
+                            sensorData.humidity < 10
                           ? "advertencia"
                           : "normal"
                       }
@@ -224,16 +235,18 @@ export const Home = () => {
                         2
                       )} ppm`}
                       descripcion="Concentración de gases nocivos"
-                      umbral={500}
-                      minimo="0"
-                      maximo="1000"
-                      ideal="<300"
-                      porcentaje={(calibrateGasSensor(sensorData.gas) / 1000) * 100}
+                      ideal="300 ppm"
+                      minimo="0 ppm"
+                      maximo="800 ppm"
+                      porcentaje={
+                        (calibrateGasSensor(sensorData.gas) / 800) * 100
+                      }
                       icon={<GiGasStove className="text-4xl text-gray-600" />}
                       estado={
-                        calibrateGasSensor(sensorData.gas) > 800
+                        calibrateGasSensor(sensorData.gas) > 800 ||
+                        calibrateGasSensor(sensorData.gas) < 0
                           ? "crítico"
-                          : calibrateGasSensor(sensorData.gas) > 500
+                          : calibrateGasSensor(sensorData.gas) > 300
                           ? "advertencia"
                           : "normal"
                       }
