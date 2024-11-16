@@ -3,15 +3,17 @@ import {
   FaSignOutAlt,
   FaBars,
   FaTimes,
+  FaChartPie
 } from "react-icons/fa";
 import logo from "../img/logo.png";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 const Menu = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -39,7 +41,7 @@ const Menu = () => {
             text: "Has cerrado sesión exitosamente.",
             confirmButtonColor: "#F59E0B",
           });
-          navigate("/login");
+          navigate("/landingPage");
         }
       } catch (error) {
         Swal.fire({
@@ -59,8 +61,6 @@ const Menu = () => {
   const btnDashboard = () => {
     navigate("/home");
   };
-
-
 
   return (
     <>
@@ -86,14 +86,24 @@ const Menu = () => {
             </button>
           </div>
           <nav className="flex-1">
-            <button onClick={btnDashboard} className="flex items-center space-x-3 w-full p-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors">
+            <button
+              onClick={btnDashboard}
+              className={`flex items-center space-x-3 w-full p-3 rounded-lg ${
+                location.pathname === '/home' ? 'bg-gray-700' : 'hover:bg-gray-600'
+              } transition-colors`}
+            >
               <FaTachometerAlt className="text-xl" />
               <span>Dashboard</span>
             </button>
 
-            <button onClick={btnEstadisticas} className="flex items-center space-x-3 w-full p-3 rounded-lg hover:bg-gray-600 transition-colors mt-4">
-              <FaTachometerAlt className="text-xl" />
-              <span>Estadisticas</span>
+            <button
+              onClick={btnEstadisticas}
+              className={`flex items-center space-x-3 w-full p-3 rounded-lg mt-4 ${
+                location.pathname === '/graphics' ? 'bg-gray-700' : 'hover:bg-gray-600'
+              } transition-colors`}
+            >
+              <FaChartPie className="text-xl" />
+              <span>Estadísticas</span>
             </button>
 
             <button
