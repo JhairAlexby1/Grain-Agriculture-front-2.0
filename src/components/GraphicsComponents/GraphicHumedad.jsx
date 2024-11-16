@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement, Filler } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement, Filler);
 
 export const GraphicHumedad = () => {
   const [data, setData] = useState({
@@ -11,10 +11,14 @@ export const GraphicHumedad = () => {
     datasets: [
       {
         label: 'Humedad (%)',
-        data: Array(7).fill(0), 
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        data: Array(7).fill(0),
         borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true, 
+        tension: 0.3, 
+        pointRadius: 5,
+        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 2,
       },
     ],
   });
@@ -58,9 +62,13 @@ export const GraphicHumedad = () => {
               {
                 label: 'Humedad (%)',
                 data: finalHumidity,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: true, 
+                tension: 0.3, 
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
               },
             ],
           });
@@ -81,10 +89,25 @@ export const GraphicHumedad = () => {
       },
       title: {
         display: true,
-        text: 'Humedad Externa Maxima de la Semana',
+        text: 'Humedad Externa Máxima de la Semana',
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Humedad (%)',
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Días de la Semana',
+        },
       },
     },
   };
 
-  return <Bar data={data} options={options} />;
+  return <Line data={data} options={options} />;
 };

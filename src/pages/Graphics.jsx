@@ -15,11 +15,7 @@ export const Graphics = () => {
         <h1 className="text-2xl font-bold mb-4">Gráficos</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl">
-          <div className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center">
-            <div className="w-full h-full">
-              <GraphicHumedad />
-            </div>
-          </div>
+          
           <div className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center">
             <div className="w-full h-full">
               <GraphicTemp />
@@ -36,6 +32,12 @@ export const Graphics = () => {
                     <GraphicGas />
                 </div>
             </div>
+
+            <div className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center">
+            <div className="w-full h-full">
+              <GraphicHumedad />
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement);
 
 export const GraphicGas = () => {
     const [data, setData] = useState({
@@ -11,10 +11,14 @@ export const GraphicGas = () => {
         datasets: [
             {
                 label: 'Concentración de Gas (ppm)',
-                data: Array(7).fill(0), 
-                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                borderColor: 'rgba(255, 159, 64, 1)',
-                borderWidth: 1,
+                data: Array(7).fill(0),
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                fill: true,
+                tension: 0.3, 
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 2,
             },
         ],
     });
@@ -68,9 +72,13 @@ export const GraphicGas = () => {
                             {
                                 label: 'Concentración de Gas (ppm)',
                                 data: finalGasValues,
-                                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                                borderColor: 'rgba(255, 159, 64, 1)',
-                                borderWidth: 1,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                fill: true,
+                                tension: 0.3,
+                                pointRadius: 5,
+                                pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 2,
                             },
                         ],
                     });
@@ -94,7 +102,22 @@ export const GraphicGas = () => {
                 text: 'Concentración de Gas de la Semana',
             },
         },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Concentración de Gas (ppm)',
+                },
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Días de la Semana',
+                },
+            },
+        },
     };
 
-    return <Bar data={data} options={options} />;
+    return <Line data={data} options={options} />;
 };
