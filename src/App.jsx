@@ -3,6 +3,8 @@ import { LandingPage } from "./pages/LandingPage";
 import { Login } from "./pages/Login";
 import { NotFound } from "./pages/NotFound";
 import Home from "./pages/Home";
+import { Graphics } from "./pages/Graphics";
+
 
 export default function App() {
   return (
@@ -12,7 +14,7 @@ export default function App() {
         <Route path="/landingPage" element={<LandingPage />} />
         <Route path="/home" element={<Home />} />
 
-
+        <Route path="/graphics" element={<Graphics />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
 
