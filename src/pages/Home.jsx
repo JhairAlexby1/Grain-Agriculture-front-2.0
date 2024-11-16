@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import Menu from "../components/Menu";
 import CardTemperatura from "../components/CardTemperatura";
 import CardNivel from "../components/CardNivel";
 import CardSkeleton from "../components/CardSkeleton";
@@ -9,6 +8,8 @@ import { GiGasStove } from "react-icons/gi";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Menu from "../components/Menu";
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -30,51 +31,6 @@ const Home = () => {
     };
   }, []);
 
-  const handleLogout = async () => {
-    const result = await Swal.fire({
-      title: "¿Estás seguro?",
-      text: "¿Deseas cerrar la sesión?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#F59E0B",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, cerrar sesión",
-      cancelButtonText: "Cancelar",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        const response = await axios.post(
-          "http://localhost:3000/users/logout",
-          {},
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          Swal.fire({
-            icon: "success",
-            title: "Sesión cerrada",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          localStorage.clear();
-          navigate("/landingPage");
-        }
-      } catch (error) {
-        console.error("Error al cerrar sesión:", error);
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "No se pudo cerrar la sesión",
-        });
-      }
-    }
-  };
 
   const calibrateGasSensor = (rawValue) => {
     if (rawValue < 0 || rawValue > 1023) {
@@ -90,21 +46,13 @@ const Home = () => {
       <Menu
         isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
-        onLogout={handleLogout}
       />
-
       <div className="flex-1 overflow-auto">
         <div className="p-4 sm:p-8">
           <div className="mb-8 flex justify-between items-center">
             <h1 className="text-2xl sm:text-4xl font-bold text-gray-800">
               Panel de Control
             </h1>
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden p-2 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition-colors"
-            >
-              <FaBars size={24} />
-            </button>
           </div>
 
           <div className="space-y-8">
@@ -182,14 +130,11 @@ const Home = () => {
                       minimo="8%"
                       maximo="14%"
                       porcentaje={(sensorData.humidity / 100) * 100}
-                      icon={
-                        <FaCloudRain className="text-4xl text-blue-400" />
-                      }
+                      icon={<FaCloudRain className="text-4xl text-blue-400" />}
                       estado={
                         sensorData.humidity > 14 || sensorData.humidity < 8
                           ? "crítico"
-                          : sensorData.humidity > 12 ||
-                            sensorData.humidity < 10
+                          : sensorData.humidity > 12 || sensorData.humidity < 10
                           ? "advertencia"
                           : "normal"
                       }
@@ -235,9 +180,7 @@ const Home = () => {
                   <>
                     <CardNivel
                       titulo="Sensor de Vibración 1"
-                      valor={
-                        sensorData.movement_1 === 1 ? "Activo" : "Inactivo"
-                      }
+                      valor={sensorData.movement_1 === 1 ? "Activo" : "Inactivo"}
                       descripcion="Sensor de vibración principal"
                       umbral={1}
                       minimo="0"
@@ -245,15 +188,11 @@ const Home = () => {
                       ideal="0"
                       porcentaje={sensorData.movement_1 * 100}
                       icon={<FaBolt className="text-4xl text-yellow-500" />}
-                      estado={
-                        sensorData.movement_1 === 1 ? "crítico" : "normal"
-                      }
+                      estado={sensorData.movement_1 === 1 ? "crítico" : "normal"}
                     />
                     <CardNivel
                       titulo="Sensor de Vibración 2"
-                      valor={
-                        sensorData.movement_2 === 1 ? "Activo" : "Inactivo"
-                      }
+                      valor={sensorData.movement_2 === 1 ? "Activo" : "Inactivo"}
                       descripcion="Sensor de vibración secundario"
                       umbral={1}
                       minimo="0"
@@ -261,9 +200,7 @@ const Home = () => {
                       ideal="0"
                       porcentaje={sensorData.movement_2 * 100}
                       icon={<FaBolt className="text-4xl text-yellow-500" />}
-                      estado={
-                        sensorData.movement_2 === 1 ? "crítico" : "normal"
-                      }
+                      estado={sensorData.movement_2 === 1 ? "crítico" : "normal"}
                     />
                   </>
                 ) : (
