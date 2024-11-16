@@ -19,6 +19,15 @@ export const GraphicGas = () => {
         ],
     });
 
+    const calibrateGasSensor = (rawValue) => {
+        if (rawValue < 0 || rawValue > 1023) {
+            console.warn("Invalid sensor value:", rawValue);
+            return 0;
+        }
+        const percentage = 100 - (rawValue / 1023) * 100;
+        return Math.round(percentage * 10) / 10;
+    };
+
     useEffect(() => {
         axios.get('http://localhost:3000/grain-sensor', { withCredentials: true })
             .then(response => {
@@ -45,7 +54,8 @@ export const GraphicGas = () => {
                     last7DaysData.forEach(sensor => {
                         const sensorDate = new Date(sensor.date);
                         const dayName = dayOfWeekMap[sensorDate.getDay()];
-                        maxGasByDay[dayName] = Math.max(maxGasByDay[dayName], sensor.gas);
+                        const calibratedValue = calibrateGasSensor(sensor.gas);
+                        maxGasByDay[dayName] = Math.max(maxGasByDay[dayName], calibratedValue);
                     });
 
                     const finalGasValues = Object.keys(maxGasByDay).map(day =>
