@@ -31,7 +31,9 @@ const Menu = () => {
     if (result.isConfirmed) {
       try {
         const response = await axios.post(
-          "http://localhost:3000/users/logout"
+          "http://localhost:3000/users/logout",
+          {},
+          { withCredentials: true } 
         );
 
         if (response.status === 200) {
@@ -39,16 +41,14 @@ const Menu = () => {
             icon: "success",
             title: "Sesión cerrada",
             text: "Has cerrado sesión exitosamente.",
-            confirmButtonColor: "#F59E0B",
           });
-          navigate("/landingPage");
+          navigate('/landingPage'); 
         }
       } catch (error) {
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: "No se pudo cerrar la sesión.",
-          confirmButtonColor: "#F59E0B",
+          text: "Hubo un problema al cerrar la sesión.",
         });
       }
     }
