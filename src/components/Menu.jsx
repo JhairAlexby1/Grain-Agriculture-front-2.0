@@ -5,7 +5,7 @@ import {
   FaTimes,
   FaChartPie
 } from "react-icons/fa";
-import logo from "../img/logo.png";
+import logo from "../img/logo-softwareWhite.png";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -77,7 +77,7 @@ const Menu = () => {
       >
         <div className="p-4 flex flex-col h-full">
           <div className="flex items-center justify-between mb-8">
-            <img src={logo} alt="Logo" className="h-8 w-auto" />
+            <img src={logo} alt="Logo" className="h-20 w-auto" />
             <button
               className="md:hidden text-white"
               onClick={() => setIsMobileMenuOpen(false)}
