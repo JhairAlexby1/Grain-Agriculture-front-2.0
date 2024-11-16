@@ -5,15 +5,15 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const GraphicTempMaximaSemana = () => {
+export const GraphicGas = () => {
     const [data, setData] = useState({
         labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
         datasets: [
             {
-                label: 'Temperatura Máxima Interna De Granos (°C)',
+                label: 'Concentración de Gas (ppm)',
                 data: Array(7).fill(0), 
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
                 borderWidth: 1,
             },
         ],
@@ -32,7 +32,7 @@ const GraphicTempMaximaSemana = () => {
                         return diffInDays <= 7;
                     });
 
-                    const maxTemperaturesByDay = {
+                    const maxGasByDay = {
                         Lunes: -Infinity,
                         Martes: -Infinity,
                         Miércoles: -Infinity,
@@ -45,21 +45,21 @@ const GraphicTempMaximaSemana = () => {
                     last7DaysData.forEach(sensor => {
                         const sensorDate = new Date(sensor.date);
                         const dayName = dayOfWeekMap[sensorDate.getDay()];
-                        maxTemperaturesByDay[dayName] = Math.max(maxTemperaturesByDay[dayName], sensor.temperature_inside);
+                        maxGasByDay[dayName] = Math.max(maxGasByDay[dayName], sensor.gas);
                     });
 
-                    const finalTemperatures = Object.keys(maxTemperaturesByDay).map(day =>
-                        maxTemperaturesByDay[day] === -Infinity ? 0 : maxTemperaturesByDay[day]
+                    const finalGasValues = Object.keys(maxGasByDay).map(day =>
+                        maxGasByDay[day] === -Infinity ? 0 : maxGasByDay[day]
                     );
 
                     setData({
                         labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
                         datasets: [
                             {
-                                label: 'Temperatura Máxima Interna De Granos (°C)',
-                                data: finalTemperatures,
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                borderColor: 'rgba(255, 99, 132, 1)',
+                                label: 'Concentración de Gas (ppm)',
+                                data: finalGasValues,
+                                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                                borderColor: 'rgba(255, 159, 64, 1)',
                                 borderWidth: 1,
                             },
                         ],
@@ -79,10 +79,12 @@ const GraphicTempMaximaSemana = () => {
             legend: {
                 position: 'top',
             },
+            title: {
+                display: true,
+                text: 'Concentración de Gas de la Semana',
+            },
         },
     };
 
     return <Bar data={data} options={options} />;
 };
-
-export default GraphicTempMaximaSemana;

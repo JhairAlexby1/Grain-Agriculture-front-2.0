@@ -1,7 +1,9 @@
+import { GraphicGas } from "../components/GraphicsComponents/GraphicGas";
 import { GraphicHumedad } from "../components/GraphicsComponents/GraphicHumedad";
 import GraphicTemp from "../components/GraphicsComponents/GraphicTemp";
 import GraphicTempInterna from "../components/GraphicsComponents/GraphicTempInterna";
 import Menu from "../components/Menu";
+
 
 
 
@@ -28,6 +30,12 @@ export const Graphics = () => {
               <GraphicTempInterna />
             </div>
           </div>
+
+            <div className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center">
+                <div className="w-full h-full">
+                    <GraphicGas />
+                </div>
+            </div>
         </div>
       </div>
     </div>
