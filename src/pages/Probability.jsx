@@ -3,8 +3,6 @@ import Menu from '../components/Menu';
 import NormDistTemExt from '../components/ProbabilityComponents/NormDistTemExt';
 import NormDistTemInt from '../components/ProbabilityComponents/NormDistTemInt';
 import NormDistGas from '../components/ProbabilityComponents/NormDistGas';
-import GraphicPastel from '../components/ProbabilityComponents/GraphicPastel';
-
 
 export const Probability = () => {
   return (
@@ -15,8 +13,9 @@ export const Probability = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-6xl">
           <NormDistTemExt />
           <NormDistTemInt />
+        </div>
+        <div className=" max-w-6xl mt-4">
           <NormDistGas />
-          <GraphicPastel />
         </div>
       </div>
     </div>

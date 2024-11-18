@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { StatisticsSkeleton } from './StatisticsSkeleton';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const NormDistGas = () => {
   const [data, setData] = useState(null);
@@ -8,7 +12,8 @@ const NormDistGas = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/statistics', { withCredentials: true })
+    axios
+      .get('http://localhost:3000/statistics', { withCredentials: true })
       .then(response => {
         setData(response.data);
         setLoading(false);
@@ -29,21 +34,61 @@ const NormDistGas = () => {
 
   const gasData = data.stats.gas;
 
+  const chartData = {
+    labels: ['Por debajo del mínimo', 'Por encima del máximo', 'Dentro de los límites'],
+    datasets: [
+      {
+        label: 'Probabilidades de Gas',
+        data: [
+          gasData.probabilities.below_min,
+          gasData.probabilities.above_max,
+          gasData.probabilities.within_limits,
+        ],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)', 
+          'rgba(54, 162, 235, 0.6)', 
+          'rgba(75, 192, 192, 0.6)', 
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(75, 192, 192, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    plugins: {
+      legend: {
+        position: 'bottom', 
+        labels: {
+          font: {
+            size: 14, 
+          },
+        },
+      },
+    },
+    maintainAspectRatio: false,
+  };
+
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center">
-      <div className="w-full h-full">
-        <h1 className="text-2xl font-bold mb-4">Gas</h1>
-        <div className="p-4 bg-gray-100 rounded-lg shadow">
-          <h2 className="text-xl font-semibold">Datos de Gas</h2>
-          <p>Promedio: {gasData.average.toFixed(2)} ppm</p>
-          <p>Desviación Estándar: {gasData.std_dev.toFixed(2)}</p>
-          <p>Probabilidades:</p>
-          <ul className="list-disc list-inside">
-            <li>Por debajo del mínimo: {gasData.probabilities.below_min}%</li>
-            <li>Por encima del máximo: {gasData.probabilities.above_max}%</li>
-            <li>Dentro de los límites: {gasData.probabilities.within_limits}%</li>
-          </ul>
-        </div>
+    <div className="bg-white p-4 rounded-lg shadow-md flex flex-col lg:flex-row items-center gap-4">
+      <div className="flex-1 text-center lg:text-left">
+        <h1 className="text-xl font-bold mb-2">Gas</h1>
+        <h2 className="text-base font-semibold mb-2">Datos de Gas</h2>
+        <p className="text-sm mb-1">Promedio: <span className="font-medium">{gasData.average.toFixed(2)} ppm</span></p>
+        <p className="text-sm mb-1">Desviación Estándar: <span className="font-medium">{gasData.std_dev.toFixed(2)}</span></p>
+        <h3 className="text-sm font-medium mt-2 mb-2">Probabilidades:</h3>
+        <ul className="list-disc list-inside text-sm space-y-1">
+          <li>Por debajo del mínimo: <span className="font-medium">{gasData.probabilities.below_min}%</span></li>
+          <li>Por encima del máximo: <span className="font-medium">{gasData.probabilities.above_max}%</span></li>
+          <li>Dentro de los límites: <span className="font-medium">{gasData.probabilities.within_limits}%</span></li>
+        </ul>
+      </div>
+      <div className="lg:w-72 lg:h-72 w-60 h-60 flex-shrink-0">
+        <Pie data={chartData} options={chartOptions} />
       </div>
     </div>
   );
