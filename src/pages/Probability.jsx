@@ -1,9 +1,9 @@
 import React from 'react';
 import Menu from '../components/Menu';
-import NormDistTemExt from '../components/statisticsComponents/NormDistTemExt';
-import NormDistTemInt from '../components/statisticsComponents/NormDistTemInt';
-import NormDistGas from '../components/statisticsComponents/NormDistGas';
-import GraphicPastel from '../components/statisticsComponents/GraphicPastel';
+import NormDistTemExt from '../components/ProbabilityComponents/NormDistTemExt';
+import NormDistTemInt from '../components/ProbabilityComponents/NormDistTemInt';
+import NormDistGas from '../components/ProbabilityComponents/NormDistGas';
+import GraphicPastel from '../components/ProbabilityComponents/GraphicPastel';
 
 
 export const Probability = () => {
