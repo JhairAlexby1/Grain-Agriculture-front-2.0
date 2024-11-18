@@ -4,13 +4,12 @@ import { Login } from "./pages/Login";
 import { NotFound } from "./pages/NotFound";
 import Home from "./pages/Home";
 import { Graphics } from "./pages/Graphics";
-import { Statistics } from "./pages/statistics";
+import { Probability } from "./pages/Probability";
 import withAuth from "./components/withAuth";
 import { Prediction } from "./pages/Prediction";
 
-
 const ProtectedHome = withAuth(Home);
-const ProtectedStatistics = withAuth(Statistics);
+const ProtectedProbability = withAuth(Probability);
 const ProtectedGraphics = withAuth(Graphics);
 const ProtectedPrediction = withAuth(Prediction);
 
@@ -21,7 +20,7 @@ export default function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/landingPage" element={<LandingPage />} />
         <Route path="/home" element={<ProtectedHome />} />
-        <Route path="/statistics" element={<ProtectedStatistics />} />
+        <Route path="/probability" element={<ProtectedProbability />} />
         <Route path="/graphics" element={<ProtectedGraphics />} />
         <Route path="/login" element={<Login />} />
         <Route path="/prediction" element={<ProtectedPrediction />} />

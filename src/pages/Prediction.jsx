@@ -42,7 +42,6 @@ export const Prediction = () => {
             <p><strong>Movimiento 2 después de Movimiento 1:</strong> {data.weeklyAnalysis.sequentialPatterns.movement2AfterMovement1}</p>
           </div>
         </div>
-        {/* Predicción */}
         <div className="mb-8 bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Predicción</h2>
           <p className="mb-2"><strong>Probabilidades del Próximo Movimiento:</strong></p>
@@ -52,7 +51,6 @@ export const Prediction = () => {
           </div>
           <p className="mt-4"><strong>Confianza:</strong> {data.prediction.confidence}</p>
         </div>
-        {/* Factores Ambientales */}
         <div className="mb-8 bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Factores Ambientales</h2>
           <h3 className="text-lg font-medium text-gray-600 mt-4">Temperatura</h3>

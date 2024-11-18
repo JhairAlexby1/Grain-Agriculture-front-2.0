@@ -60,8 +60,8 @@ const Menu = () => {
     navigate("/graphics");
   };
 
-  const statistics = () => {
-    navigate("/statistics");
+  const probabilidad = () => {
+    navigate("/probability");
   };
 
   const btnDashboard = () => {
@@ -117,7 +117,7 @@ const Menu = () => {
             </button>
 
             <button
-              onClick={statistics}
+              onClick={probabilidad}
               className={`flex items-center space-x-3 w-full p-3 rounded-lg mt-4 ${
                 location.pathname === '/statistics' ? 'bg-gray-700' : 'hover:bg-gray-600'
               } transition-colors`}
