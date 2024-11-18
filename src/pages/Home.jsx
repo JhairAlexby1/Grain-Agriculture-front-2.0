@@ -10,7 +10,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Menu from "../components/Menu";
 
-
 const Home = () => {
   const navigate = useNavigate();
   const [sensorData, setSensorData] = useState(null);
@@ -22,7 +21,6 @@ const Home = () => {
     });
 
     socket.on("grainSensorData", (data) => {
-      console.log("Received sensor data:", data);
       setSensorData(data);
     });
 
@@ -31,10 +29,9 @@ const Home = () => {
     };
   }, []);
 
-
   const calibrateGasSensor = (rawValue) => {
     if (rawValue < 0 || rawValue > 1023) {
-      console.warn("Invalid sensor value:", rawValue);
+      console.warn("Invalid sensor value:", rawValue); // Mantengo advertencias de valores inválidos
       return 0;
     }
     const percentage = 100 - (rawValue / 1023) * 100;

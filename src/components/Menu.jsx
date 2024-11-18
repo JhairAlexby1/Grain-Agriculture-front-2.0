@@ -4,7 +4,8 @@ import {
   FaBars,
   FaTimes,
   FaChartPie,
-  FaChartBar, 
+  FaChartBar,
+  FaBrain, 
 } from "react-icons/fa";
 import logo from "../img/logo-softwareWhite.png";
 import Swal from "sweetalert2";
@@ -67,6 +68,10 @@ const Menu = () => {
     navigate("/home");
   };
 
+  const PredictionBtn = () => {
+    navigate("/prediction");
+  };
+
   return (
     <>
       <button
@@ -118,7 +123,17 @@ const Menu = () => {
               } transition-colors`}
             >
               <FaChartBar className="text-xl" /> 
-              <span>Estadisticas</span>
+              <span>Probabilidad</span>
+            </button>
+
+            <button
+              onClick={PredictionBtn}
+              className={`flex items-center space-x-3 w-full p-3 rounded-lg mt-4 ${
+                location.pathname === '/prediction' ? 'bg-gray-700' : 'hover:bg-gray-600'
+              } transition-colors`}
+            >
+              <FaBrain className="text-xl" /> 
+              <span>Predicciones</span>
             </button>
 
             <button

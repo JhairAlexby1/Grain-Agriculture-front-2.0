@@ -6,10 +6,13 @@ import Home from "./pages/Home";
 import { Graphics } from "./pages/Graphics";
 import { Statistics } from "./pages/statistics";
 import withAuth from "./components/withAuth";
+import { Prediction } from "./pages/Prediction";
+
 
 const ProtectedHome = withAuth(Home);
 const ProtectedStatistics = withAuth(Statistics);
 const ProtectedGraphics = withAuth(Graphics);
+const ProtectedPrediction = withAuth(Prediction);
 
 export default function App() {
   return (
@@ -21,6 +24,7 @@ export default function App() {
         <Route path="/statistics" element={<ProtectedStatistics />} />
         <Route path="/graphics" element={<ProtectedGraphics />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/prediction" element={<ProtectedPrediction />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
