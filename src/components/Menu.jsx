@@ -3,7 +3,8 @@ import {
   FaSignOutAlt,
   FaBars,
   FaTimes,
-  FaChartPie
+  FaChartPie,
+  FaChartBar, 
 } from "react-icons/fa";
 import logo from "../img/logo-softwareWhite.png";
 import Swal from "sweetalert2";
@@ -33,7 +34,7 @@ const Menu = () => {
         const response = await axios.post(
           "http://localhost:3000/users/logout",
           {},
-          { withCredentials: true } 
+          { withCredentials: true }
         );
 
         if (response.status === 200) {
@@ -42,7 +43,7 @@ const Menu = () => {
             title: "Sesión cerrada",
             text: "Has cerrado sesión exitosamente.",
           });
-          navigate('/landingPage'); 
+          navigate('/landingPage');
         }
       } catch (error) {
         Swal.fire({
@@ -56,6 +57,10 @@ const Menu = () => {
 
   const btnEstadisticas = () => {
     navigate("/graphics");
+  };
+
+  const statistics = () => {
+    navigate("/statistics");
   };
 
   const btnDashboard = () => {
@@ -103,7 +108,17 @@ const Menu = () => {
               } transition-colors`}
             >
               <FaChartPie className="text-xl" />
-              <span>Estadísticas</span>
+              <span>Graficos</span>
+            </button>
+
+            <button
+              onClick={statistics}
+              className={`flex items-center space-x-3 w-full p-3 rounded-lg mt-4 ${
+                location.pathname === '/statistics' ? 'bg-gray-700' : 'hover:bg-gray-600'
+              } transition-colors`}
+            >
+              <FaChartBar className="text-xl" /> 
+              <span>Estadisticas</span>
             </button>
 
             <button
