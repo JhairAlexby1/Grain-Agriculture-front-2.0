@@ -32,7 +32,7 @@ const NormDistGas = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  const gasData = data.stats.gas;
+  const gasData = data?.stats?.gas || {};
 
   const chartData = {
     labels: ['Por debajo del mínimo', 'Por encima del máximo', 'Dentro de los límites'],
@@ -40,14 +40,14 @@ const NormDistGas = () => {
       {
         label: 'Probabilidades de Gas',
         data: [
-          gasData.probabilities.below_min,
-          gasData.probabilities.above_max,
-          gasData.probabilities.within_limits,
+          gasData?.probabilities?.below_min || 0,
+          gasData?.probabilities?.above_max || 0,
+          gasData?.probabilities?.within_limits || 0,
         ],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.6)', 
-          'rgba(54, 162, 235, 0.6)', 
-          'rgba(75, 192, 192, 0.6)', 
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
@@ -62,10 +62,10 @@ const NormDistGas = () => {
   const chartOptions = {
     plugins: {
       legend: {
-        position: 'bottom', 
+        position: 'bottom',
         labels: {
           font: {
-            size: 14, 
+            size: 14,
           },
         },
       },
@@ -78,13 +78,23 @@ const NormDistGas = () => {
       <div className="flex-1 text-center lg:text-left">
         <h1 className="text-xl font-bold mb-2">Gas</h1>
         <h2 className="text-base font-semibold mb-2">Datos de Gas</h2>
-        <p className="text-sm mb-1">Promedio: <span className="font-medium">{gasData.average.toFixed(2)} ppm</span></p>
-        <p className="text-sm mb-1">Desviación Estándar: <span className="font-medium">{gasData.std_dev.toFixed(2)}</span></p>
+        <p className="text-sm mb-1">
+          Promedio: <span className="font-medium">{gasData?.average ? gasData.average.toFixed(2) : 'N/A'} ppm</span>
+        </p>
+        <p className="text-sm mb-1">
+          Desviación Estándar: <span className="font-medium">{gasData?.std_dev ? gasData.std_dev.toFixed(2) : 'N/A'}</span>
+        </p>
         <h3 className="text-sm font-medium mt-2 mb-2">Probabilidades:</h3>
         <ul className="list-disc list-inside text-sm space-y-1">
-          <li>Por debajo del mínimo: <span className="font-medium">{gasData.probabilities.below_min}%</span></li>
-          <li>Por encima del máximo: <span className="font-medium">{gasData.probabilities.above_max}%</span></li>
-          <li>Dentro de los límites: <span className="font-medium">{gasData.probabilities.within_limits}%</span></li>
+          <li>
+            Por debajo del mínimo: <span className="font-medium">{gasData?.probabilities?.below_min || 0}%</span>
+          </li>
+          <li>
+            Por encima del máximo: <span className="font-medium">{gasData?.probabilities?.above_max || 0}%</span>
+          </li>
+          <li>
+            Dentro de los límites: <span className="font-medium">{gasData?.probabilities?.within_limits || 0}%</span>
+          </li>
         </ul>
       </div>
       <div className="lg:w-72 lg:h-72 w-60 h-60 flex-shrink-0">

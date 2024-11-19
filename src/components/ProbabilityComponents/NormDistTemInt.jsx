@@ -32,7 +32,7 @@ const NormDistTemInt = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  const temperatureInside = data.stats.temperature_inside;
+  const temperatureInside = data?.stats?.temperature_inside || {};
 
   const chartData = {
     labels: ['Por debajo del mínimo', 'Por encima del máximo', 'Dentro de los límites'],
@@ -40,14 +40,14 @@ const NormDistTemInt = () => {
       {
         label: 'Probabilidades de Temperatura Interna',
         data: [
-          temperatureInside.probabilities.below_min,
-          temperatureInside.probabilities.above_max,
-          temperatureInside.probabilities.within_limits,
+          temperatureInside?.probabilities?.below_min || 0,
+          temperatureInside?.probabilities?.above_max || 0,
+          temperatureInside?.probabilities?.within_limits || 0,
         ],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.6)', 
-          'rgba(54, 162, 235, 0.6)', 
-          'rgba(75, 192, 192, 0.6)', 
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
@@ -73,13 +73,17 @@ const NormDistTemInt = () => {
       <h1 className="text-lg font-bold mb-2">Temperatura Interna</h1>
       <div className="p-3 bg-gray-100 rounded-md shadow w-full">
         <h2 className="text-base font-semibold mb-2">Datos de Temperatura</h2>
-        <p className="text-sm">Promedio: {temperatureInside.average.toFixed(2)}°C</p>
-        <p className="text-sm">Desviación Estándar: {temperatureInside.std_dev.toFixed(2)}</p>
+        <p className="text-sm">
+          Promedio: {temperatureInside?.average ? temperatureInside.average.toFixed(2) : 'N/A'}°C
+        </p>
+        <p className="text-sm">
+          Desviación Estándar: {temperatureInside?.std_dev ? temperatureInside.std_dev.toFixed(2) : 'N/A'}
+        </p>
         <h3 className="text-sm font-medium mt-3">Probabilidades:</h3>
         <ul className="list-disc list-inside text-sm">
-          <li>Por debajo del mínimo: {temperatureInside.probabilities.below_min}%</li>
-          <li>Por encima del máximo: {temperatureInside.probabilities.above_max}%</li>
-          <li>Dentro de los límites: {temperatureInside.probabilities.within_limits}%</li>
+          <li>Por debajo del mínimo: {temperatureInside?.probabilities?.below_min || 0}%</li>
+          <li>Por encima del máximo: {temperatureInside?.probabilities?.above_max || 0}%</li>
+          <li>Dentro de los límites: {temperatureInside?.probabilities?.within_limits || 0}%</li>
         </ul>
         <div className="w-48 h-48 mx-auto mt-3">
           <Pie data={chartData} options={chartOptions} />
