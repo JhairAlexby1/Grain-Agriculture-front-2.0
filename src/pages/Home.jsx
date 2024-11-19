@@ -30,13 +30,15 @@ const Home = () => {
   }, []);
 
   const calibrateGasSensor = (rawValue) => {
-    if (rawValue < 0 || rawValue > 1023) {
-      console.warn("Invalid sensor value:", rawValue); // Mantengo advertencias de valores inválidos
+    const MAX_ADC_VALUE = 4095; 
+    if (rawValue < 0 || rawValue > MAX_ADC_VALUE) {
+      console.warn("Invalid sensor value:", rawValue); 
       return 0;
     }
-    const percentage = 100 - (rawValue / 1023) * 100;
+    const percentage = 100 - (rawValue / MAX_ADC_VALUE) * 100;
     return Math.round(percentage * 10) / 10;
   };
+  
 
   return (
     <div className="flex h-screen bg-gray-100">
