@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Menu from '../components/Menu';
-import PredictionContent from '../components/PredictionComponents/PredictionContent';
+import ProbabilityIndicator from '../components/PredictionComponents/ProbabilityIndicator';
 
 export const Prediction = () => {
   const [probability, setProbability] = useState(null);
@@ -20,7 +20,7 @@ export const Prediction = () => {
     <div className="flex h-screen bg-gray-100">
       <Menu />
       <div className="flex flex-col items-center justify-center w-full">
-        <PredictionContent />
+      <ProbabilityIndicator />
         {probability !== null && (
           <div className="mt-4 p-4 bg-white shadow-md rounded">
             <p className="text-xl font-semibold">Probabilidad de Movimiento en el dia: {probability}%</p>
