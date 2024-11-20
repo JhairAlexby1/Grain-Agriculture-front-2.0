@@ -16,17 +16,16 @@ const Home = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const socket = io("ws://localhost:3002/grain-sensor", {
+    const socket = io("wss://grainagricultureapi.integrador.xyz/ws-grain-sensor", {
       transports: ["websocket"],
+      withCredentials: true,
     });
 
     socket.on("grainSensorData", (data) => {
       setSensorData(data);
     });
 
-    return () => {
-      socket.disconnect();
-    };
+    
   }, []);
 
   const calibrateGasSensor = (rawValue) => {
@@ -143,7 +142,7 @@ const Home = () => {
                       valor={`${calibrateGasSensor(sensorData.gas).toFixed(
                         2
                       )} ppm`}
-                      descripcion="Concentración de gases nocivos"
+                      descripcion="Concentración de CO2"
                       ideal="300 ppm"
                       minimo="0 ppm"
                       maximo="800 ppm"
