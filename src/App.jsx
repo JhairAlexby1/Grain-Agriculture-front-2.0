@@ -5,13 +5,7 @@ import { NotFound } from "./pages/NotFound";
 import Home from "./pages/Home";
 import { Graphics } from "./pages/Graphics";
 import { Probability } from "./pages/Probability";
-import withAuth from "./components/withAuth";
 import { Prediction } from "./pages/Prediction";
-
-const ProtectedHome = withAuth(Home);
-const ProtectedProbability = withAuth(Probability);
-const ProtectedGraphics = withAuth(Graphics);
-const ProtectedPrediction = withAuth(Prediction);
 
 export default function App() {
   return (
@@ -19,11 +13,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/landingPage" element={<LandingPage />} />
-        <Route path="/home" element={<ProtectedHome />} />
-        <Route path="/probability" element={<ProtectedProbability />} />
-        <Route path="/graphics" element={<ProtectedGraphics />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/graphics" element={<Graphics />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/prediction" element={<ProtectedPrediction />} />
+        <Route path="/probability" element={<Probability />} />
+        <Route path="/prediction" element={<Prediction />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

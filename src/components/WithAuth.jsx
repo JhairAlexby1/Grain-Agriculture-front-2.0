@@ -10,7 +10,7 @@ const withAuth = (WrappedComponent) => {
     useEffect(() => {
       const checkAuth = async () => {
         try {
-          const response = await axios.get('http://localhost:3000/users/check-auth', { withCredentials: true });
+          const response = await axios.get('https://grainagricultureapi.integrador.xyz/users/check-auth', { withCredentials: true });
           if (response.status !== 200) {
             throw new Error('Not authenticated');
           }
