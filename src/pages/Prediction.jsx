@@ -7,7 +7,7 @@ export const Prediction = () => {
   const [probability, setProbability] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/statistics/movement-prediction', { withCredentials: true })
+    axios.get('https://grainagricultureapi.integrador.xyz/statistics/movement-prediction', { withCredentials: true })
       .then(response => {
         setProbability(response.data.probability);
       })

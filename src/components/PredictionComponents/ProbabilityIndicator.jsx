@@ -5,7 +5,7 @@ const ProbabilityIndicator = () => {
   const [probability, setProbability] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/statistics/movement-prediction', {
+    axios.get('https://grainagricultureapi.integrador.xyz/statistics/movement-prediction', {
       withCredentials: true
     })
       .then(response => {
