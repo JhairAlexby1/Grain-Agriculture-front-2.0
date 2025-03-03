@@ -46,7 +46,7 @@ export const Hero = () => {
             Monitoreo Inteligente para tus Granos
           </h1>
           <p className="text-xl md:text-2xl text-[#5D4037]">
-            Mantén la calidad y frescura de tus granos de forma simple y segura desde cualquier lugar.
+            Mantén la calidad y frescura de tus granos de forma simple y segura desde cualquier lugar
           </p>
           
         </div>

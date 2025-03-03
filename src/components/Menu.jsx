@@ -33,7 +33,7 @@ const Menu = () => {
     if (result.isConfirmed) {
       try {
         const response = await axios.post(
-          "http://localhost:3000/users/logout",
+          "https://grainagricultureapi.integrador.xyz/users/logout",
           {},
           { withCredentials: true }
         );

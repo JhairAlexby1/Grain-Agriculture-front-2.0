@@ -6,7 +6,7 @@ const PredictionContent = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3000/statistics/movement-prediction', { withCredentials: true })
+      .get('https://grainagricultureapi.integrador.xyz/statistics/movement-prediction', { withCredentials: true })
       .then(response => {
         setData(response.data);
       })

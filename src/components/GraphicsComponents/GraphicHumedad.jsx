@@ -24,7 +24,7 @@ export const GraphicHumedad = () => {
   });
 
   useEffect(() => {
-    axios.get('http://localhost:3000/grain-sensor', { withCredentials: true })
+    axios.get('https://grainagricultureapi.integrador.xyz/grain-sensor', { withCredentials: true })
       .then(response => {
         if (Array.isArray(response.data.data)) {
           const now = new Date();

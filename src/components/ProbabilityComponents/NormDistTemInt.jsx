@@ -13,7 +13,7 @@ const NormDistTemInt = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3000/statistics', { withCredentials: true })
+      .get('https://grainagricultureapi.integrador.xyz/statistics', { withCredentials: true })
       .then(response => {
         setData(response.data);
         setLoading(false);
