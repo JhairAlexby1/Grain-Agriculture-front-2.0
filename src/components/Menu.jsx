@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { ENDPOINTS } from '../config/api';
 
 const Menu = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const Menu = () => {
     if (result.isConfirmed) {
       try {
         const response = await axios.post(
-          "https://grainagricultureapi.integrador.xyz/users/logout",
+          ENDPOINTS.LOGOUT,
           {},
           { withCredentials: true }
         );
