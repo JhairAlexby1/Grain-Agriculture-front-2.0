@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ENDPOINTS } from '../../config/api';
 
 const ProbabilityIndicator = () => {
   const [probability, setProbability] = useState(null);
 
   useEffect(() => {
-    axios.get('https://grainagricultureapi.integrador.xyz/statistics/movement-prediction', {
+    axios.get(ENDPOINTS.MOVEMENT_PREDICTION, {
       withCredentials: true
     })
       .then(response => {
