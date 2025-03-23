@@ -25,11 +25,17 @@ export const GraphicGas = () => {
     });
 
     const calibrateGasSensor = (rawValue) => {
-        if (rawValue < 0 || rawValue > 1023) {
-            console.warn("Invalid sensor value:", rawValue);
+        // Adjust the range for higher values (1300-1700 approximate range from your data)
+        const minValue = 1300;
+        const maxValue = 1700;
+        
+        if (rawValue < minValue || rawValue > maxValue) {
+            console.warn("Gas value outside expected range:", rawValue);
             return 0;
         }
-        const percentage = 100 - (rawValue / 1023) * 100;
+        
+        // Invert and normalize the value (higher raw value = lower gas concentration)
+        const percentage = ((maxValue - rawValue) / (maxValue - minValue)) * 100;
         return Math.round(percentage * 10) / 10;
     };
 
