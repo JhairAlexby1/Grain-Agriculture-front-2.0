@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { StatisticsSkeleton } from './StatisticsSkeleton';
+import { ENDPOINTS } from '../../config/api';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -13,7 +14,7 @@ const NormDistTemExt = () => {
 
   useEffect(() => {
     axios
-      .get('https://grainagricultureapi.integrador.xyz/statistics', { withCredentials: true })
+      .get(ENDPOINTS.STATISTICS, { withCredentials: true })
       .then(response => {
         setData(response.data);
         setLoading(false);

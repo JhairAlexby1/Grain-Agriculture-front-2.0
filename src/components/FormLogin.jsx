@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2'; 
+import { ENDPOINTS } from '../config/api';
 
 export const FormLogin = () => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ export const FormLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-    const handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
   
     if (!email || !password) {
@@ -23,7 +24,7 @@ export const FormLogin = () => {
   
     try {
       const response = await axios.post(
-        'https://grainagricultureapi.integrador.xyz/users/login',
+        ENDPOINTS.LOGIN,
         { email, password },
         {
           headers: {

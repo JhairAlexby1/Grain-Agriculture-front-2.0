@@ -3,20 +3,17 @@ import { io } from "socket.io-client";
 import CardTemperatura from "../components/CardTemperatura";
 import CardNivel from "../components/CardNivel";
 import CardSkeleton from "../components/CardSkeleton";
-import { FaThermometerHalf, FaCloudRain, FaBolt, FaBars } from "react-icons/fa";
+import { FaThermometerHalf, FaCloudRain, FaBolt } from "react-icons/fa";
 import { GiGasStove } from "react-icons/gi";
-import Swal from "sweetalert2";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Menu from "../components/Menu";
+import { WS_ENDPOINTS } from "../config/api";
 
 const Home = () => {
-  const navigate = useNavigate();
   const [sensorData, setSensorData] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const socket = io("wss://grainagricultureapi.integrador.xyz/ws-grain-sensor", {
+    const socket = io(WS_ENDPOINTS.GRAIN_SENSOR, {
       transports: ["websocket"],
       withCredentials: true,
     });
@@ -25,7 +22,9 @@ const Home = () => {
       setSensorData(data);
     });
 
-    
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   const calibrateGasSensor = (rawValue) => {
@@ -38,7 +37,6 @@ const Home = () => {
     return Math.round(percentage * 10) / 10;
   };
   
-
   return (
     <div className="flex h-screen bg-gray-100">
       <Menu
@@ -113,6 +111,7 @@ const Home = () => {
               </div>
             </div>
 
+            {/* Resto del componente permanece igual... */}
             <div>
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-4">
                 Ambiente

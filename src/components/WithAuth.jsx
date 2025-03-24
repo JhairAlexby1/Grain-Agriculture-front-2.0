@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { ENDPOINTS } from '../config/api';
 
 const withAuth = (WrappedComponent) => {
   return (props) => {
@@ -10,7 +11,7 @@ const withAuth = (WrappedComponent) => {
     useEffect(() => {
       const checkAuth = async () => {
         try {
-          const response = await axios.get('https://grainagricultureapi.integrador.xyz/users/check-auth', { withCredentials: true });
+          const response = await axios.get(ENDPOINTS.CHECK_AUTH, { withCredentials: true });
           if (response.status !== 200) {
             throw new Error('Not authenticated');
           }

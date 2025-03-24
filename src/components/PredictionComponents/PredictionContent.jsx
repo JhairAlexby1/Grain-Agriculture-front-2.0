@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ENDPOINTS } from '../../config/api';
 
 const PredictionContent = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     axios
-      .get('https://grainagricultureapi.integrador.xyz/statistics/movement-prediction', { withCredentials: true })
+      .get(ENDPOINTS.MOVEMENT_PREDICTION, { withCredentials: true })
       .then(response => {
         setData(response.data);
       })

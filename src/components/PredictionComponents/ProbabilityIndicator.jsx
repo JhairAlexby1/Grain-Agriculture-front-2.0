@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ENDPOINTS } from '../../config/api';
 
 const ProbabilityIndicator = () => {
   const [probability, setProbability] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('https://grainagricultureapi.integrador.xyz/statistics/movement-prediction', {
+    axios.get(ENDPOINTS.MOVEMENT_PREDICTION, {
       withCredentials: true
     })
       .then(response => {
         let prob = Math.round(response.data.probability);
-        //prob = 89;
         setProbability(prob);
       })
       .catch(error => {
         console.error('Error fetching probability:', error);
+        setError(error.message);
+        // Use a default value or cached value if available
+        setProbability(localStorage.getItem('lastProbability') || 50);
       });
   }, []);
+  
+  // Save successful probability to localStorage for fallback
+  useEffect(() => {
+    if (probability !== null) {
+      localStorage.setItem('lastProbability', probability.toString());
+    }
+  }, [probability]);
   
   if (probability === null) {
     return (
@@ -26,6 +37,7 @@ const ProbabilityIndicator = () => {
     );
   }
 
+  // Rest of the component remains the same
   const getProbabilityText = (value) => {
     if (value >= 75) return 'Probable';
     if (value >= 50) return 'Posible';
@@ -49,6 +61,11 @@ const ProbabilityIndicator = () => {
 
   return (
     <div className="bg-blue-50 p-8 rounded-lg">
+      {error && (
+        <div className="mb-4 p-2 bg-red-100 text-red-700 text-sm rounded">
+          Error de conexión. Mostrando datos almacenados.
+        </div>
+      )}
       <div className="text-center mb-6">
         <h1 className="text-xl text-gray-700 font-semibold flex items-center justify-center gap-2">
           <span style={{ color }}>✧</span>

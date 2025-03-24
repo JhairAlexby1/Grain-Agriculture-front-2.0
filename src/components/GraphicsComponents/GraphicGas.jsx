@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement } from 'chart.js';
+import { ENDPOINTS } from '../../config/api';
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, PointElement);
 
@@ -24,16 +25,22 @@ export const GraphicGas = () => {
     });
 
     const calibrateGasSensor = (rawValue) => {
-        if (rawValue < 0 || rawValue > 1023) {
-            console.warn("Invalid sensor value:", rawValue);
+        // Adjust the range for higher values (1300-1700 approximate range from your data)
+        const minValue = 1300;
+        const maxValue = 1700;
+        
+        if (rawValue < minValue || rawValue > maxValue) {
+            console.warn("Gas value outside expected range:", rawValue);
             return 0;
         }
-        const percentage = 100 - (rawValue / 1023) * 100;
+        
+        // Invert and normalize the value (higher raw value = lower gas concentration)
+        const percentage = ((maxValue - rawValue) / (maxValue - minValue)) * 100;
         return Math.round(percentage * 10) / 10;
     };
 
     useEffect(() => {
-        axios.get('https://grainagricultureapi.integrador.xyz/grain-sensor', { withCredentials: true })
+        axios.get(ENDPOINTS.GRAIN_SENSOR, { withCredentials: true })
             .then(response => {
                 if (Array.isArray(response.data.data)) {
                     const now = new Date();
