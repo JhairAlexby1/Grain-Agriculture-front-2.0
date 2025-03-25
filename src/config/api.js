@@ -8,6 +8,7 @@ const ENDPOINTS = {
   LOGIN: `${API_BASE_URL}/users/login`,
   LOGOUT: `${API_BASE_URL}/users/logout`,
   CHECK_AUTH: `${API_BASE_URL}/users/check-auth`,
+  REGISTER: `${API_BASE_URL}/users`, 
   
   // Sensores
   GRAIN_SENSOR: `${API_BASE_URL}/grain-sensor`,

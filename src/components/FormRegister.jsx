@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2'; 
+import { ENDPOINTS } from '../config/api'; 
 
 export const FormRegister = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export const FormRegister = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!name || !phone || !email || !password) {
+    if (!name || !email || !password) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -24,8 +25,8 @@ export const FormRegister = () => {
 
     try {
       const response = await axios.post(
-        'https://grainagricultureapi.integrador.xyz/users/register',
-        { name, phone, email, password },
+        ENDPOINTS.REGISTER, 
+        { name, email, password },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -42,7 +43,7 @@ export const FormRegister = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate('/login');
+        navigate('/home'); 
       } else {
         throw new Error(response.data.message || 'Error al registrar usuario');
       }
