@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import { Graphics } from "./pages/Graphics";
 import { Probability } from "./pages/Probability";
 import { Prediction } from "./pages/Prediction";
+import { RegisterPage } from "./pages/RegisterPage";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/probability" element={<Probability />} />
         <Route path="/prediction" element={<Prediction />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </BrowserRouter>
   );
